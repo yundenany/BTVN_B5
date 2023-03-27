@@ -1,0 +1,55 @@
+﻿@model IPagedList<BTVN_B5_5.Models.Book>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+</br>
+
+@using (Html.BeginForm("Search", "Home", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("searchString")
+        <input type="submit" value="Search" />
+    </p>
+
+}
+       </br>
+<div class="row">
+    @foreach (var item in Model)
+    {
+
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p><strong>Tác giả: </strong>@item.Author</p>
+                    <p><strong>Thể loại: </strong>@item.Category.CategoryName</p>
+                    <img style="align-self:center;" alt="@item.Title"
+                         src="~/Content/ImageBooks/@item.Image" width="125" height="150" />
+                </div>
+                <div class="panel-footer clearfix">
+                    <div class="pull-right">
+                        @Html.ActionLink("Xem", "Details", "Home", new { id = item.Id }, new
+                        {
+                            @class
+                        = "btn btn-default"
+                        })
+                        @Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "Home", new
+                        {
+                            id = item.Id
+                        }, new { @class = "btn btn-success" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+@*Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount*@
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

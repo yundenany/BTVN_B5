@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BTVN_B5_5.Models.Category>
+
+@{
+    ViewBag.Title = "GetCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetCategory</h2>
+
+<h1>Chủ đề</h1>
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@Html.ActionLink(item.CategoryName, "GetBookByCategory" + item.CategoryId, "Books") </li>
+    }
+</ul>
+
+@*<h2>GetCategory</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.CategoryId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.CategoryId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.CategoryId })
+            </td>
+        </tr>
+    }
+
+    </table>
+*@

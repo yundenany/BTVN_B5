@@ -1,0 +1,100 @@
+﻿@model BTVN_B5_5.Models.Book
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+<h3>THÔNG TIN CHI TIẾT SÁCH </h3>
+<div>
+    <div style="width:40%; float:left; border-left:dotted 1px; border-color:azure">
+        <img alt="@Model.Title" src="~/Content/ImageBooks/@Model.Image" style="width:125; height: 150" />
+    </div>
+    <div style="width: 60%; float: left">
+        <h4 style="font-weight: bold; color: red">Tên sách: @Model.Title</h4>
+        <h4 style="font-weight:bold; color:red">Tác giả: @Model.Author</h4>
+        <p style="text-align:justify">
+            <span style="font-weight:bold">
+                Mô tả:
+            </span>@Model.Description
+        </p>
+        <p style="font-weight:bold">
+            Giá bán: <span style="color:red; font-size:16px">
+                @Model.Price
+                VNĐ
+            </span>
+        </p>
+    </div>
+    <div>
+        <div>
+            @Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "Home", new { id = Model.Id }, new
+            {
+            @class = "btn btn-primary font-weight-bold"
+            })
+        </div>
+    </div>
+</div>
+
+@*<h2>Details</h2>
+
+    <div>
+        <h4>Book</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Author)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Author)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Image)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+*@
