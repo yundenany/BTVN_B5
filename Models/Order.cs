@@ -15,6 +15,7 @@ namespace BTVN_B5_5.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderNo { get; set; }
 
         public int? CustumerID { get; set; }

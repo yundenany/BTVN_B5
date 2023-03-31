@@ -10,11 +10,16 @@ namespace BTVN_B5_5.Models
     public partial class OrderDetail
     {
         [Key]
+        //[ForeignKey("Book")]
         [Column(Order = 0)]
+        //[ForeignKey("Book")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int BookID { get; set; }
 
         [Key]
+        //[ForeignKey("Order")]
         [Column(Order = 1)]
+        //[ForeignKey("Order")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderNo { get; set; }
 

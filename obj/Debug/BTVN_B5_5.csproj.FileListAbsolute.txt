@@ -110,3 +110,5 @@ E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\bin\Microsoft.CodeDom.Providers.DotNetCompile
 E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\obj\Debug\BTVN_B5_5.csproj.CopyComplete
 E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\obj\Debug\BTVN_B5_5.dll
 E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\obj\Debug\BTVN_B5_5.pdb
+E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\bin\EPPlus.Core.dll
+E:\ASP.NET_Framwork\BTVN\BTVN_B5_5\bin\EPPlus.Core.xml

@@ -21,7 +21,7 @@ namespace BTVN_B5_5.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-       // public virtual DbSet<CartItem> CartItems { get; set; }
+       public virtual DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

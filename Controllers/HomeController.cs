@@ -7,6 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList.Mvc;
 using PagedList;
+using System.Web.WebPages;
+using System.Text.RegularExpressions;
+using System.Text;
+using System.Linq.Expressions;
+//using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
 namespace BTVN_B5_5.Controllers
 {
@@ -15,14 +20,34 @@ namespace BTVN_B5_5.Controllers
         private BookModelContext db = new BookModelContext();
 
         // GET: Books
-        public ActionResult Index(string searchString, int? page)
+        public ActionResult Index(int? page, string searchString)
         {
+            var context = new BookModelContext();
+            searchString = searchString ?? "";
             if (page == null) page = 1;
-            var links = (from l in db.Books select l).OrderBy(x => x.Id);
+            var links = (from l in db.Books.AsEnumerable() where convertToUnSign3(l.Title.ToLower())
+                        .Contains(searchString)  select l).OrderBy(l => l.Id);
+
+            //var links = (from l in context.Books where convertToUnSign3(l.Title.ToLower()).Contains(convertToUnSign3(searchString)) select l).OrderBy(x => x.Id);
+            if (!searchString.IsEmpty())
+            {
+                links = (from l in db.Books.AsEnumerable()
+                         where convertToUnSign3(l.Title.ToLower())
+                       .Contains(searchString.ToLower())
+                         select l).OrderBy(l => l.Id);
+                //links = (from l in context.Books where convertToUnSign3(l.Title.ToLower()).Contains(convertToUnSign3(searchString).ToLower()) select l).OrderBy(x => x.Id);
+
+            }
             int pageSize = 3;
             int pageNumber = (page ?? 1);
-            var context = new BookModelContext();
-            return View(context.Books.ToList().ToPagedList(pageNumber, pageSize));
+            return View(links.ToPagedList(pageNumber, pageSize));
+        }
+
+        public string convertToUnSign3(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
         }
 
         public ActionResult GetBookByCategory(int id)
@@ -41,34 +66,43 @@ namespace BTVN_B5_5.Controllers
         // GET: Books/Details/5
         public ActionResult Details(int? id)
         {
+            var context = new BookModelContext();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
+            /*Book book = db.Books.Find(id);*/
+            Book book = context.Books.Find(id);
             if (book == null)
             {
                 return HttpNotFound();
             }
             return View(book);
         }
-
-        public ActionResult Search(string searchString)
+        [HttpPost]
+        public ActionResult Search(FormCollection formCollection)
         {
-            var context = new BookModelContext().Books.Where(p => p.Title.Trim().ToLower().Contains(searchString.Trim().ToLower())).ToList();
-            return View("Index", context.ToPagedList(1, 3));
+            string searchString = formCollection["search"].ToString();
+            /* var context = new BookModelContext().Books.Where(p => p.Title.Trim().ToLower().Contains(searchString.Trim().ToLower())).ToList();
+             Response.Write("<script>alert('"+ searchString.Trim().ToLower() + "')</script>");
+             return View("Index", context.ToPagedList(1, 3));*/
+
+
+            return RedirectToAction("Index", new { searchString });
         }
 
         public ActionResult AddToCart(int id)
         {
-            try
-            {
-                return RedirectToAction("Index", "ShoppingCart");
-            }
-            catch (Exception ex)
-            {
-                return Content("Success Adding");
-            }
+            /*  try
+              {*/
+            return RedirectToAction("AddToCart", "ShoppingCart", new { @id = id });
+            //return RedirectToAction("ShoppingCart", new { id = 99 });
+            //return RedirectToAction("AddToCart", "ShoppingCart", id);
+            //}
+            /* catch (Exception ex)
+             {
+                 return Content("Success Adding");
+             }*/
         }
 
 
@@ -78,6 +112,8 @@ namespace BTVN_B5_5.Controllers
 
             return View();
         }
+
+
 
         public ActionResult Contact()
         {

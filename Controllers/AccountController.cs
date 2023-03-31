@@ -79,7 +79,11 @@ namespace BTVN_B5_5.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    /*return RedirectToLocal(returnUrl);*/
+                    var context = new BookModelContext();
+                    var user = context.AspNetUsers.Where(p => p.Email == model.Email).FirstOrDefault();
+                    if (UserManager.IsInRole(user.Id, "Admin"))
+                        returnUrl = "/Admin/Book";
+                    return RedirectToLocal(returnUrl);
                     return RedirectToAction("Index", "Home");
                 case SignInStatus.LockedOut:
                     return View("Lockout");

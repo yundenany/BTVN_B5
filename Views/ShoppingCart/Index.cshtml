@@ -1,4 +1,4 @@
-﻿@model List< BTVN_B5_5.Models.CartItem>
+﻿@model IEnumerable<BTVN_B5_5.Models.CartItem>
 
 @{
     ViewBag.Title = "Index";
@@ -8,8 +8,8 @@
 <h2 style="text-align:center">THÔNG TIN GIỎ HÀNG</h2>
 <table align="center" border="1">
     <tr style="text-align:center; font-weight:bold">
-        <td> Tên sách </td>
-        <td> Ảnh bìa </td>
+        <td> Tên Sản Phẩm </td>
+        <td> Ảnh </td>
         <td> Số lượng </td>
         <td> Đơn giá </td>
         <td> Thành tiền </td>
@@ -27,17 +27,17 @@
                 <td>
                     <input type="number" min="1" name="txtQuantity" value="@item.Quantity" style="background-color:yellow" />
                 </td>
-                <td> @String.Format("{0:0,0}", item.Price)</td>
+                <td> @String.Format("{0:0,0}", item.Price) </td>
                 <td> @String.Format("{0:0,0}", item.Money) </td>
-                <td><a href="@Url.Action("Details","Book",new { id = item.Id })"> Chi tiết </a></td>
+                <td><a href="@Url.Action("Details","Home",new { id = item.Id })"> Chi tiết </a></td>
                 <td> @Html.ActionLink("Xóa", "RemoveCartItem", new { id = item.Id })</td>
                 <td> <input type="submit" value="Cập nhật" /></td>
-           }
+            }
         </tr>
     }
 
     <tr style="font-weight:bold; text-align:right; color:red">
-        <td colspan="5"> Số lượng sách: @ViewBag.Tongsoluong </td>
+        <td colspan="5"> Số lượng: @ViewBag.Tongsoluong </td>
         <td colspan="5"> Tổng tiền: @String.Format("{0:0,0}", ViewBag.Tongtien) VNĐ</td>
     </tr>
     <tr style="font-weight:bold; color:blue; text-align:right">
@@ -52,3 +52,48 @@
     </tr>
 </table>
 
+    @*<h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th></th>
+            </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                </td>
+            </tr>
+        }
+
+        </table>*@

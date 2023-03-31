@@ -14,12 +14,15 @@ namespace BTVN_B5_5.Controllers
         // GET: ShoppingCart
         public ActionResult Index()
         {
+           /* var context = new BookModelContext();
+            var db  = new CartItem();*/
             List<CartItem> ShoppingCart = GetShoppingCartFromSession();
-            if (ShoppingCart.Count != 0)
+            if (ShoppingCart.Count == 0)
                 return RedirectToAction("Index", "Home");
 
             ViewBag.Tongsoluong = ShoppingCart.Sum(p => p.Quantity);
             ViewBag.Tongtien = ShoppingCart.Sum(p => p.Quantity * p.Price);
+            /*return View(db.CartItems.ToList());*/
             /*return View(db.CartItems.ToList());*/
             return View(ShoppingCart);
         }
@@ -39,19 +42,19 @@ namespace BTVN_B5_5.Controllers
         public RedirectToRouteResult AddToCart(int id)
         {
             BookModelContext db = new BookModelContext();
-            List<CartItem> ShoppingCart = GetShoppingCartFromSession();
+            /* var context = new BookModelContext();*/
+           List<CartItem> ShoppingCart = GetShoppingCartFromSession();
+            //List<CartItem> ShoppingCart = db.CartItems.ToList();
             CartItem findCartItem = ShoppingCart.FirstOrDefault(m => m.Id == id);
+            Book findBook = db.Books.FirstOrDefault(m => m.Id == id);
+           /* CartItem findCartItem = (CartItem)ShoppingCart.Select(p=>p);
+            Book findBook = (Book)db.Books.Select(p=>p);*/
             if (findCartItem == null)
             {
-                Book findBook = db.Books.First(m => m.Id == id);
-                CartItem newItem = new CartItem()
-                {
-                    Id = findBook.Id,
-                    Title = findBook.Title,
-                    Quantity = 1,
-                    Image = findBook.Image,
-                    Price = findBook.Price.Value,
-                };
+                //var findBook = new CartItem();
+                
+                // findBook = db.Books.Include(p => p.Id).FirstOrDefault(m => m.Id == id);
+                CartItem newItem = new CartItem() { Id = findBook.Id, Title = findBook.Title, Quantity = 1, Image = findBook.Image, Price = findBook.Price.Value, };
                 ShoppingCart.Add(newItem);
             }
             else
@@ -80,7 +83,7 @@ namespace BTVN_B5_5.Controllers
         {
             var itemFind = GetShoppingCartFromSession().FirstOrDefault(p => p.Id == id);
             GetShoppingCartFromSession().Remove(itemFind);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ShoppingCart");
         }
 
         public RedirectToRouteResult Delete()
@@ -102,7 +105,7 @@ namespace BTVN_B5_5.Controllers
 
                 Order objOrder = new Order()
                 {
-                    /* OrderNo = 0,*/
+                    //OrderNo = 1,
                     CustumerID = null,
                     OrderDate = DateTime.Now,
                     DeliveryDate = null,
@@ -117,13 +120,14 @@ namespace BTVN_B5_5.Controllers
                 {
                     OrderDetail ctdh = new OrderDetail()
                     {
-                        OrderNo = objOrder.OrderNo,
+                        
                         BookID = item.Id,
+                        OrderNo = objOrder.OrderNo,
                         Quantity = item.Quantity,
                         Price = item.Price
                     };
-                    /*OrderDetail detail = orderDetail;*/
-                    context.OrderDetails.Add(ctdh);
+                    //OrderDetail detail = OrderDetail;
+                    OrderDetail orderDetail = context.OrderDetails.Add(ctdh);
                     context.SaveChanges();
                 }
                 transaction.Commit();
@@ -194,14 +198,14 @@ namespace BTVN_B5_5.Controllers
         }
 
         // GET: ShoppingCart/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Deletes(int id)
         {
             return View();
         }
 
         // POST: ShoppingCart/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Deletes(int id, FormCollection collection)
         {
             try
             {

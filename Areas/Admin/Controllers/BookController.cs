@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -49,10 +50,19 @@ namespace BTVN_B5_5.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Author,Price,Description,Image,CategoryId")] Book book)
+        public ActionResult Create(/*[Bind(Include = "Id,Title,Author,Price,Description,Image,CategoryId")]*/ Book book)
         {
             if (ModelState.IsValid)
             {
+                var file = Request.Files[0];
+                string path = "";
+                if (file != null && file.ContentLength > 0)
+                {
+                    path = file.FileName;
+                    var path1 = Path.Combine(Server.MapPath("~/Content/ImageBooks/"), Path.GetFileName(file.FileName));
+                    file.SaveAs(path1);
+                }
+                book.Image = path;
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
